@@ -35,8 +35,8 @@ type re2Instance struct {
 
 func newRe2(ctx context.Context, r wazero.Runtime) *re2Instance {
 	// Stubbed main function to be used as a library (WASI reactor).
-	if _, err := r.NewModuleBuilder("env").
-		ExportFunction("__main_argc_argv", func(int32, int32) int32 { return 0 }).
+	if _, err := r.NewHostModuleBuilder("env").
+		NewFunctionBuilder().WithFunc(func(int32, int32) int32 { return 0 }).Export("__main_argc_argv").
 		Instantiate(ctx, r); err != nil {
 		panic(err)
 	}
